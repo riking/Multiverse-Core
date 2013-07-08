@@ -16,6 +16,7 @@ import com.onarandombox.MultiverseCore.api.MultiverseWorld;
 import com.onarandombox.MultiverseCore.api.SafeTTeleporter;
 import com.onarandombox.MultiverseCore.api.WorldPurger;
 import com.onarandombox.MultiverseCore.event.MVWorldDeleteEvent;
+import com.onarandombox.MultiverseCore.event.MVWorldLoadEvent;
 import com.onarandombox.MultiverseCore.exceptions.PropertyDoesNotExistException;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -427,6 +428,10 @@ public class WorldManager implements MVWorldManager {
         MVWorld world = new MVWorld(plugin, cbworld, mvworld);
         this.worldPurger.purgeWorld(world);
         this.worlds.put(worldName, world);
+
+        // Call post-event
+        MVWorldLoadEvent event = new MVWorldLoadEvent(world);
+        plugin.getServer().getPluginManager().callEvent(event);
         return true;
     }
 
